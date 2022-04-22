@@ -20,6 +20,7 @@ var DeleteCustomerById = func(r *repo.Repository) func(c *gin.Context) {
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "ID is not found"})
+			return
 		}
 
 		c.JSON(http.StatusOK, true)

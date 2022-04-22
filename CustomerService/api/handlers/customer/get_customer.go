@@ -9,7 +9,6 @@ import (
 )
 
 var GetCustomers = func(repository *repo.Repository) func(context *gin.Context) {
-	// Consider a situation other than Closure!
 	return func(c *gin.Context) {
 		req, err := repository.Get()
 		if err != nil {

@@ -10,7 +10,7 @@ import (
 
 var GetCustomerByUserId = func(r *repo.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		userId := c.Param("userId")
+		userId := c.Params.ByName("userId")
 		err := c.ShouldBind(userId)
 
 		if err != nil {
@@ -29,7 +29,6 @@ var GetCustomerByUserId = func(r *repo.Repository) func(c *gin.Context) {
 			return
 		}
 
-		//#TODO: you must converted uuid to bson type :)
 		customer := &response_models.Customer{
 			Name:       req.Name,
 			UserID:     req.UserID,

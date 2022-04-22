@@ -66,12 +66,10 @@ func (r *Repository) Insert(customer *models.Customer) (*models.Customer, error)
 func (r *Repository) Update(id string, customer *models.Customer) (*models.Customer, error) {
 	var session = r.mongoClient.NewSession()
 	defer session.Close()
-	updateId := bson.M{"userId": id}
-
+	selector := bson.M{"userId": id}
 	err := session.
 		DB("tesodev").
-		C("customer").Update(updateId, customer)
-
+		C("customer").Update(selector, customer)
 	if err != nil {
 		return nil, err
 	}

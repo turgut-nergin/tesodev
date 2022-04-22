@@ -4,24 +4,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/api/handlers/request_models"
 	"github.com/turgut-nergin/tesodev/repository/models"
-	repositorty "github.com/turgut-nergin/tesodev/repository/repo"
+	"github.com/turgut-nergin/tesodev/repository/repo"
 )
 
-var UpdateCustomer = func(r *repositorty.Repository) func(c *gin.Context) {
+var UpdateCustomerHandler = func(r *repo.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		userId := c.Param("userId")
-		err := c.ShouldBind(userId)
 
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-
+		if userId == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user ID can not be empty"})
+			return
 		}
 
-		var req *request_models.Customer
-		err = c.ShouldBindJSON(&req)
+		var req request_models.Customer
+		err := c.ShouldBindJSON(&req)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -31,15 +29,16 @@ var UpdateCustomer = func(r *repositorty.Repository) func(c *gin.Context) {
 		//#TODO: you must converted uuid to bson type :)
 		customer := &models.Customer{
 			Name:    req.Name,
-			UserID:  uuid.New().String(),
+			UserID:  userId,
 			Email:   req.Email,
 			Address: models.Address(req.Address),
 		}
 
-		customerR, err := r.Insert(customer)
+		customerR, err := r.Update(userId, customer)
 
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
 		}
 		c.JSON(http.StatusAccepted, customerR)
 	}

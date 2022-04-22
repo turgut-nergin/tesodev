@@ -21,11 +21,6 @@ var CreateCustomer = func(r *repositorty.Repository) func(c *gin.Context) {
 			return
 		}
 
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Can not bind the request!"})
-			return
-		}
-
 		//#TODO: you must converted uuid to bson type :)
 		customer := &models.Customer{
 			Name:    req.Name,

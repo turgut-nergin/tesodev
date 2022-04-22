@@ -5,10 +5,9 @@ import (
 )
 
 type Customer struct {
-	UserID     string    `json:"userId"`
 	Name       string    `json:"name"`
 	Email      string    `json:"email"`
-	Address    Address   `json:"adress"`
+	Address    Address   `json:"address"`
 	CreatedAdd time.Time `json:"createdAdd"`
 	UpdatedAdd time.Time `json:"updatedAdd"`
 }

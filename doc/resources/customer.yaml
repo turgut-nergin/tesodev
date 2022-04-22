@@ -1,0 +1,150 @@
+getCustomerByID:
+  get:
+    tags:
+      - Customer
+    summary: Get customer by ID
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}          
+
+deleteCustomer:
+  delete:
+    tags:
+      - Customer
+    summary: Delete customer
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}          
+
+getCustomers:
+  get:
+    tags:
+      - Customer
+    summary: Get customers
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}   
+
+updateCustomer:
+  put:
+    tags:
+      - Customer
+    summary: Insert customer
+    operationId: "updateUser"   
+    produces:
+    - "application/xml"
+    - "application/json"  
+    parameters:
+    - name: userId
+      in: "path"
+      description: "userId that need to be updated"
+      required: true
+      schema:
+        type: string
+        format: uuid
+    requestBody:
+      content:
+        application/json:     
+          schema:
+            $ref: "#/definitions/Customer"
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}
+
+
+
+          
+createCustomer:
+  post:
+    tags:
+      - Customer
+    summary: Insert customer
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                required: true
+                type: string
+                format: string
+              email: 
+                required: true
+                type: string
+                format: email
+              address: 
+                properties:
+                  addressLine:
+                    type: string
+                    format: string   
+                  city:
+                    type: string
+                    format: string   
+                  country:
+                    type: string
+                    format: string
+                  cityCode:
+                    type: number
+                    format: int
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}
+
+  required:
+    - Email
+    - Address
+    - AddressLine
+    - City
+    - Country
+    - CityCode
+    - Name
+      
+definitions:
+  Customer:
+    type: "object"
+    properties:
+      name:
+        type: string
+        format: string
+      email: 
+        type: string
+        format: email
+      address: 
+        properties:
+          addressLine:
+            type: string
+            format: string   
+          city:
+            type: string
+            format: string   
+          country:
+            type: string
+            format: string
+          cityCode:
+            type: number
+            format: int      

@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info:
+  title: API documentation
+  version: 1.0.0
+  schemes:
+    - http
+servers:
+  - url: http://localhost:8086
+tags:
+  - name: Customers
+paths:
+  /get/customers/userID/{userId}:
+    $ref: './resources/customer.yaml#/getCustomerByID'   
+  /bulk/customers:
+    $ref: './resources/customer.yaml#/getCustomers' 
+  /insert/customer:
+    $ref: './resources/customer.yaml#/createCustomer'   
+  /delete/customers/userId/{userId}:
+    $ref: './resources/customer.yaml#/deleteCustomer'   
+  /update/customers/userId/{userId}:
+    $ref: './resources/customer.yaml#/updateCustomer' 
