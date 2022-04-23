@@ -9,13 +9,15 @@ servers:
 tags:
   - name: Customers
 paths:
-  /get/customers/userID/{userId}:
+  /get/customers/customerId/{customerId}:
     $ref: './resources/customer.yaml#/getCustomerByID'   
   /bulk/customers:
     $ref: './resources/customer.yaml#/getCustomers' 
   /insert/customer:
     $ref: './resources/customer.yaml#/createCustomer'   
-  /delete/customers/userId/{userId}:
+  /delete/customers/customerId/{customerId}:
     $ref: './resources/customer.yaml#/deleteCustomer'   
-  /update/customers/userId/{userId}:
+  /update/customers/customerId/{customerId}:
     $ref: './resources/customer.yaml#/updateCustomer' 
+  /validate/customer/customerId/{customerId}:
+    $ref: './resources/customer.yaml#/validateCustomer' 

@@ -5,7 +5,7 @@ getCustomerByID:
     summary: Get customer by ID
     parameters:
       - in: path
-        name: userId
+        name: customerId
         required: true
         schema:
           type: string
@@ -14,7 +14,25 @@ getCustomerByID:
       '200':
         description: Successful response
         content:
-          application/json: {}          
+          application/json: {}  
+
+validateCustomer:
+  get:
+    tags:
+      - Customer
+    summary: Customer check if is valid.
+    parameters:
+      - in: path
+        name: customerId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}    
 
 deleteCustomer:
   delete:
@@ -23,7 +41,7 @@ deleteCustomer:
     summary: Delete customer
     parameters:
       - in: path
-        name: userId
+        name: customerId
         required: true
         schema:
           type: string
@@ -55,9 +73,9 @@ updateCustomer:
     - "application/xml"
     - "application/json"  
     parameters:
-    - name: userId
+    - name: customerId
       in: "path"
-      description: "userId that need to be updated"
+      description: "customerId that need to be updated"
       required: true
       schema:
         type: string
@@ -97,7 +115,7 @@ createCustomer:
                 format: email
               address: 
                 properties:
-                  addressLine:
+                  addressline:
                     type: string
                     format: string   
                   city:
@@ -106,7 +124,7 @@ createCustomer:
                   country:
                     type: string
                     format: string
-                  cityCode:
+                  citycode:
                     type: number
                     format: int
     responses:
@@ -136,7 +154,7 @@ definitions:
         format: email
       address: 
         properties:
-          addressLine:
+          addressline:
             type: string
             format: string   
           city:
@@ -145,6 +163,6 @@ definitions:
           country:
             type: string
             format: string
-          cityCode:
+          citycode:
             type: number
             format: int      

@@ -8,10 +8,10 @@ import (
 
 type Customer struct {
 	ID         bson.ObjectId `bson:"_id" json:"id,omitempty"`
-	UserID     string        `bson:"userId"`
+	CustomerId string        `bson:"customerId"`
 	Name       string        `json:"name"`
 	Email      string        `json:"email"`
 	Address    Address       `json:"adress"`
-	CreatedAdd time.Time     `json:"createdAdd"`
-	UpdatedAdd time.Time     `json:"updatedAdd"`
+	CreatedAdd time.Time     `json:"createdAdd,omitempty"`
+	UpdatedAdd time.Time     `json:"updatedAdd,omitempty"`
 }
