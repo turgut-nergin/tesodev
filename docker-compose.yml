@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+#   matching-service:
+#     container_name: matching_container
+#     build:
+#         context: matching-service
+#     image: bitaksi/matching-service
+#     ports:
+#       - "8081:8081"
+#     networks:
+#       service-network:
+#         aliases:
+#           - matching-service
+
+  customer-service:
+    container_name: customer_container
+    build:
+      context: CustomerService
+    image: tesodev/customer_service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mongo-db
+    networks:
+      service-network:
+        aliases:
+          - CustomerService
+    restart: on-failure
+
+  mongo-db:
+    image: mongo
+    ports:
+        - "27017:27017"
+    container_name: mongo_container
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      service-network:
+        aliases:
+          - mongo-db
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_service_container
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./doc:/usr/share/nginx/html/doc
+    networks:
+      service-network:
+        aliases:
+          - swagger-ui
+    environment:
+      URLS: "[{ url: \"doc/customer_swagger.yaml\", name: \"Customers\" }]"
+
+volumes:
+  mongo-data:
+
+networks:
+  service-network:
+
+    # { url: \"doc/matching_swagger.yaml\", name: \"Matching\" }]

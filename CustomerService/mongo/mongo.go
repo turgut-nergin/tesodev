@@ -8,12 +8,23 @@ type Client struct {
 	session *mgo.Session
 }
 
-func NewClient(connectionString string) (*Client, error) {
-	session, err := mgo.Dial(connectionString)
+// func GetMongoDB() *Client {
+// 	host := "mongo-db:27017"
+// 	dbName := "tesodev"
+// 	session, err := mgo.Dial(host)
+// 	if err != nil {
+// 		panic("connection error.")
+// 	}
+// 	db := session.DB(dbName)
+// 	return &Client{session: db}
+// }
+
+func NewClient() *Client {
+	session, err := mgo.Dial("mongo-db:27017")
 	if err != nil {
-		return nil, err
+		panic("connection error!")
 	}
-	return &Client{session: session}, nil
+	return &Client{session: session}
 }
 
 func (c *Client) NewSession() *mgo.Session {

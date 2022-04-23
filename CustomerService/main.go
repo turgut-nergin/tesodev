@@ -1,23 +1,21 @@
 package main
 
 import (
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/turgut-nergin/tesodev/api/routes"
+	"github.com/turgut-nergin/tesodev/middleware"
 	"github.com/turgut-nergin/tesodev/mongo"
 	repositorty "github.com/turgut-nergin/tesodev/repository/repo"
 )
 
 func main() {
-	conn := os.Getenv("mongodb://mongo-db:27017")
+	// client := mongo.GetMongoDB()
 
-	mongoClient, err := mongo.NewClient(conn)
-	if err != nil {
-		panic("Connection could not be established")
-	}
-	repo := repositorty.New(mongoClient)
+	client := mongo.NewClient()
+	repo := repositorty.New(client)
+
 	engine := gin.New()
+	engine.Use(middleware.CORSMiddleware())
 	engine.Use(gin.Recovery())
 	routes.InitializeRoutes(engine, repo)
 	engine.Run(":8086")

@@ -9,12 +9,11 @@ import (
 )
 
 var GetCustomers = func(repository *repo.Repository) func(context *gin.Context) {
-	// Consider a situation other than Closure!
 	return func(c *gin.Context) {
 		req, err := repository.Get()
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-
+			return
 		}
 
 		if req == nil {
@@ -26,7 +25,7 @@ var GetCustomers = func(repository *repo.Repository) func(context *gin.Context) 
 		for _, cus := range req {
 			customer = append(customer, response_models.Customer{
 				Name:       cus.Name,
-				UserID:     cus.UserID,
+				CustomerId: cus.CustomerId,
 				Email:      cus.Email,
 				CreatedAdd: cus.CreatedAdd,
 				UpdatedAdd: cus.UpdatedAdd,

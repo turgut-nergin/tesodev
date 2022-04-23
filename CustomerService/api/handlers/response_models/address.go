@@ -1,8 +1,8 @@
 package response_models
 
 type Address struct {
-	AddressLine string `bson:"addressline"`
-	City        string `bson:"city"`
-	Country     string `bson:"country"`
-	CityCode    int    `bson:"citycode"`
+	AddressLine string `json:"addressline"`
+	City        string `json:"city"`
+	Country     string `json:"country"`
+	CityCode    int    `json:"citycode"`
 }

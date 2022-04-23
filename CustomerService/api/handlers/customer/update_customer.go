@@ -4,43 +4,60 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/api/handlers/request_models"
+	"github.com/turgut-nergin/tesodev/api/lib/validations/requestValidation"
 	"github.com/turgut-nergin/tesodev/repository/models"
-	repositorty "github.com/turgut-nergin/tesodev/repository/repo"
+	"github.com/turgut-nergin/tesodev/repository/repo"
 )
 
-var UpdateCustomer = func(r *repositorty.Repository) func(c *gin.Context) {
+var UpdateCustomerHandler = func(r *repo.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		userId := c.Param("userId")
-		err := c.ShouldBind(userId)
+		customerId := c.Param("customerId")
 
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-
+		if customerId == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user ID can not be empty"})
+			return
 		}
 
-		var req *request_models.Customer
-		err = c.ShouldBindJSON(&req)
+		var req request_models.Customer
+		err := c.ShouldBindJSON(&req)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			return
 		}
 
-		//#TODO: you must converted uuid to bson type :)
-		customer := &models.Customer{
-			Name:    req.Name,
-			UserID:  uuid.New().String(),
-			Email:   req.Email,
-			Address: models.Address(req.Address),
+		validRequest := requestValidation.Customer{
+			Customer: req,
 		}
 
-		customerR, err := r.Insert(customer)
+		err = validRequest.Validate()
 
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
-		c.JSON(http.StatusAccepted, customerR)
+
+		address := &models.Address{
+			AddressLine: req.Address.AddressLine,
+			City:        req.Address.City,
+			CityCode:    req.Address.CityCode,
+			Country:     req.Address.Country,
+		}
+		customer := &models.Customer{
+			Name:       req.Name,
+			CustomerId: customerId,
+			Email:      req.Email,
+			Address:    *address,
+		}
+
+		_, err = r.Update(customerId, customer)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusAccepted, true)
 	}
 }

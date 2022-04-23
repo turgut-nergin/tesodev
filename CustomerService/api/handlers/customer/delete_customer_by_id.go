@@ -9,17 +9,18 @@ import (
 
 var DeleteCustomerById = func(r *repo.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		userId := c.Param("userId")
+		customerId := c.Param("customerId")
 
-		if len(userId) == 0 {
+		if len(customerId) == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Id can not be empty!"})
 			return
 		}
 
-		err := r.Delete(userId)
+		err := r.Delete(customerId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "ID is not found"})
+			c.JSON(http.StatusBadRequest, false)
+			return
 		}
 
 		c.JSON(http.StatusOK, true)
