@@ -68,7 +68,7 @@ updateCustomer:
     tags:
       - Customer
     summary: Insert customer
-    operationId: "updateUser"   
+    operationId: "updateOrder"   
     produces:
     - "application/xml"
     - "application/json"  
@@ -134,13 +134,13 @@ createCustomer:
           application/json: {}
 
   required:
-    - Email
-    - Address
-    - AddressLine
-    - City
-    - Country
-    - CityCode
-    - Name
+    - email
+    - address
+    - addressline
+    - city
+    - country
+    - citycode
+    - name
       
 definitions:
   Customer:

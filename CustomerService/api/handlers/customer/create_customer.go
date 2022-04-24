@@ -9,11 +9,11 @@ import (
 	"github.com/turgut-nergin/tesodev/api/handlers/request_models"
 	"github.com/turgut-nergin/tesodev/api/lib/validations/customerValidation"
 	"github.com/turgut-nergin/tesodev/api/lib/validations/requestValidation"
-	"github.com/turgut-nergin/tesodev/repository/models"
-	"github.com/turgut-nergin/tesodev/repository/repo"
+	"github.com/turgut-nergin/tesodev/database"
+	"github.com/turgut-nergin/tesodev/database/models"
 )
 
-var CreateCustomer = func(r *repo.Repository) func(c *gin.Context) {
+var CreateCustomer = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 
 		var req *request_models.Customer

@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
 	"github.com/turgut-nergin/tesodev/api/lib/validations/responseValidation"
-	"github.com/turgut-nergin/tesodev/repository/repo"
+	"github.com/turgut-nergin/tesodev/database"
 )
 
-var GetCustomerByCustomerId = func(r *repo.Repository) func(c *gin.Context) {
+var GetCustomerByCustomerId = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		customerId := c.Params.ByName("customerId")
 		err := c.ShouldBind(customerId)

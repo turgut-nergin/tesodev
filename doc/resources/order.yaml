@@ -1,0 +1,198 @@
+getOrderById:
+  get:
+    tags:
+      - Order
+    summary: Get Order by ID
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {} 
+
+getOrdersByCustomerId:
+  get:
+    tags:
+      - Order
+    summary: Get Order by Customer ID
+    parameters:
+      - in: path
+        name: customerId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {} 
+
+
+changeOrderStatus:
+  put:
+    tags:
+      - Order
+    summary: Update Order by status 
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: status
+        required: true
+        schema:
+          type: string
+          format: string
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {} 
+
+deleteOrder:
+  delete:
+    tags:
+      - Order
+    summary: Delete Order
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}  
+
+getOrders:
+  get:
+    tags:
+      - Order
+    summary: Get orders
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}   
+
+
+insertOrder:
+  post:
+    tags:
+      - Order
+    summary: Insert order
+    operationId: "insertOrder"   
+    produces:
+    - "application/xml"
+    - "application/json"  
+    parameters:
+    - name: customerId
+      in: "path"
+      description: "customerId that need to be create order"
+      required: true
+      schema:
+        type: string
+        format: uuid
+    requestBody:
+      content:
+        application/json:     
+          schema:
+            $ref: "#/definitions/Order"
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}
+
+updateOrder:
+  put:
+    tags:
+      - Order
+    summary: Update Order
+    operationId: "updateOrder"   
+    produces:
+    - "application/xml"
+    - "application/json"  
+    parameters:
+    - name: orderId
+      in: "path"
+      description: "orderId that need to be updated"
+      required: true
+      schema:
+        type: string
+        format: uuid
+    requestBody:
+      content:
+        application/json:     
+          schema:
+            $ref: "#/definitions/Order"
+            
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json: {}
+
+
+  required:
+    - quantity
+    - price
+    - status
+    - productid
+    - addressline
+    - city
+    - country
+    - citycode
+      
+definitions:
+  Order:
+    type: "object"
+    properties:
+      quantity:
+        type: number
+        format: int
+      price: 
+        type: number
+        format: double
+      status: 
+        type: string
+        format: string  
+      product:
+        properties:          
+          productid:
+            type: string
+            format: uuid
+          imageurl:
+            type: string
+            format: string
+          name:
+            type: string
+            format: string            
+      address: 
+        properties:
+          addressline:
+            type: string
+            format: string   
+          city:
+            type: string
+            format: string   
+          country:
+            type: string
+            format: string
+          citycode:
+            type: number
+            format: int              
+          

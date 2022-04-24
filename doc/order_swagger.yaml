@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: API documentation
+  version: 1.0.0
+  schemes:
+    - http
+servers:
+  - url: http://localhost:8087
+tags:
+  - name: Orders
+paths:
+  /insert/order/customerId/{customerId}:
+    $ref: './resources/order.yaml#/insertOrder'   
+
+  /update/orders/orderId/{orderId}:
+    $ref: './resources/order.yaml#/updateOrder'   
+
+  /delete/orders/orderId/{orderId}:
+    $ref: './resources/order.yaml#/deleteOrder'   
+
+  /bulk/orders:
+    $ref: './resources/order.yaml#/getOrders'
+       
+  /bulk/customer/orders/customerId/{customerId}:
+    $ref: './resources/order.yaml#/getOrdersByCustomerId'   
+
+  /get/orders/orderId/{orderId}:
+    $ref: './resources/order.yaml#/getOrderById'   
+
+  /update/order/status/orderId/{orderId}:
+    $ref: './resources/order.yaml#/changeOrderStatus'   

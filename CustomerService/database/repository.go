@@ -1,11 +1,11 @@
-package repo
+package database
 
 import (
 	"time"
 
 	"github.com/globalsign/mgo/bson"
+	"github.com/turgut-nergin/tesodev/database/models"
 	"github.com/turgut-nergin/tesodev/mongo"
-	"github.com/turgut-nergin/tesodev/repository/models"
 )
 
 type Repository struct {
@@ -28,6 +28,21 @@ func (r *Repository) GetByCustomerId(id string) (*models.Customer, error) {
 	}
 
 	return customer, nil
+}
+
+func (r *Repository) IdIsExist(id string) (bool, error) {
+	var session = r.mongoClient.NewSession()
+	defer session.Close()
+	query := bson.M{"customerId": id}
+
+	count, err := session.
+		DB("tesodev").
+		C("customer").Find(query).Count()
+
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }
 
 func (r *Repository) Get() ([]models.Customer, error) {

@@ -3,7 +3,7 @@ package customerValidation
 import (
 	"github.com/go-ozzo/ozzo-validation/is"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/turgut-nergin/tesodev/repository/models"
+	"github.com/turgut-nergin/tesodev/database/models"
 )
 
 type Customer struct {
