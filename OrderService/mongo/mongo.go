@@ -19,8 +19,8 @@ type Client struct {
 // 	return &Client{session: db}
 // }
 
-func NewClient() *Client {
-	session, err := mgo.Dial("mongo-db:27017")
+func NewClient(url string) *Client {
+	session, err := mgo.Dial(url)
 	if err != nil {
 		panic("connection error!")
 	}

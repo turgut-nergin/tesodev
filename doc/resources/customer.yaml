@@ -67,7 +67,7 @@ updateCustomer:
   put:
     tags:
       - Customer
-    summary: Insert customer
+    summary: Update Order
     operationId: "updateOrder"   
     produces:
     - "application/xml"

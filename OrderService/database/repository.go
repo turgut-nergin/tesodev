@@ -11,6 +11,7 @@ import (
 
 type Repository struct {
 	mongoClient *mongo.Client
+	DB          models.Repository
 }
 
 func (r *Repository) GetOrdersByCustomerId(id string) ([]*models.Order, error) {
@@ -20,8 +21,8 @@ func (r *Repository) GetOrdersByCustomerId(id string) ([]*models.Order, error) {
 	query := bson.M{"customerId": id}
 
 	err := session.
-		DB("tesodev").
-		C("orders").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Find(query).
 		Limit(100).
 		Iter().
@@ -38,8 +39,8 @@ func (r *Repository) Get() ([]*models.Order, error) {
 	defer session.Close()
 	var order []*models.Order
 	err := session.
-		DB("tesodev").
-		C("orders").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Find(nil).
 		Limit(100).
 		Iter().
@@ -61,8 +62,8 @@ func (r *Repository) Insert(order *models.Order) (*models.Order, error) {
 	order.CreatedAdd = time.Now()
 
 	err := session.
-		DB("tesodev").
-		C("orders").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Insert(order)
 
 	if err != nil {
@@ -80,9 +81,9 @@ func (r *Repository) UpdateOrderStatus(id string, status string) (bool, error) {
 	selector := bson.M{"orderId": id}
 
 	err := session.
-		DB("tesodev").
-		C("orders").Update(selector, bson.M{
-		"$set": bson.M{"status": status, "updatedAdd": time.Now()}})
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).Update(selector, bson.M{
+		"$set": bson.M{"status": status, "updatedadd": time.Now()}})
 
 	if err != nil {
 		return false, err
@@ -96,11 +97,9 @@ func (r *Repository) Update(id string, order *models.Order) (bool, error) {
 	defer session.Close()
 	selector := bson.M{"orderId": id}
 
-	order.UpdatedAdd = time.Now()
-
 	err := session.
-		DB("tesodev").
-		C("orders").Update(selector, bson.M{
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).Update(selector, bson.M{
 		"$set": order})
 
 	if err != nil {
@@ -116,8 +115,8 @@ func (r *Repository) GetOrderById(id string) (*models.Order, error) {
 	query := bson.M{"orderId": id}
 	var customer *models.Order
 	err := session.
-		DB("tesodev").
-		C("orders").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Find(query).
 		One(&customer)
 
@@ -135,8 +134,8 @@ func (r *Repository) Delete(id string) error {
 	defer session.Close()
 
 	err := session.
-		DB("tesodev").
-		C("orders").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Remove(query)
 
 	if err != nil {
@@ -145,7 +144,10 @@ func (r *Repository) Delete(id string) error {
 	return nil
 }
 
-func New(mongoClient *mongo.Client) *Repository {
-	repo := Repository{mongoClient}
+func New(mongoClient *mongo.Client, db models.Repository) *Repository {
+	repo := Repository{
+		mongoClient: mongoClient,
+		DB:          db,
+	}
 	return &repo
 }

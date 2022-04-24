@@ -85,34 +85,6 @@ func (r *Repository) Update(id string, customer *models.Customer) (*models.Custo
 	defer session.Close()
 	selector := bson.M{"customerId": id}
 
-	// updateCustomer := bson.D{
-	// 	{"$set", bson.D{
-	// 		{"name", customer.Name},
-	// 		{"customerId", customer.CustomerId},
-	// 		{"email", customer.Email},
-	// 		{"address", bson.D{
-	// 			{"addressline", customer.Address.AddressLine},
-	// 			{"city", customer.Address.City},
-	// 			{"country", customer.Address.Country},
-	// 			{"citycode", customer.Address.CityCode},
-	// 		}},
-	// 		{"updatedAdd", time.Now()},
-	// 	}}}
-
-	// updateCustomer := bson.M{
-	// 	"$set": bson.M{
-	// 		"name":       customer.Name,
-	// 		"customerId": customer.CustomerId,
-	// 		"email":      customer.Email,
-	// 		"address": bson.M{
-	// 			"addressline": customer.Address.AddressLine,
-	// 			"city":        customer.Address.City,
-	// 			"country":     customer.Address.Country,
-	// 			"citycode":    customer.Address.CityCode,
-	// 		},
-	// 		"updatedAdd": time.Now(),
-	// 	}}
-
 	customer.UpdatedAdd = time.Now()
 
 	err := session.

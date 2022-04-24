@@ -4,17 +4,20 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
 	"github.com/turgut-nergin/tesodev/database"
 )
 
 var GetOrderById = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
+
 		orderId := c.Params.ByName("orderId")
-		err := c.ShouldBind(orderId)
+
+		_, err := uuid.Parse(orderId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
@@ -32,20 +35,9 @@ var GetOrderById = func(r *database.Repository) func(c *gin.Context) {
 			Status:     req.Status,
 			Address:    response_models.Address(req.Address),
 			Product:    response_models.Product(req.Product),
-
 			CreatedAdd: req.CreatedAdd,
 			UpdatedAdd: req.UpdatedAdd,
 		}
-
-		// validCustomer := responseValidation.Customer{
-		// 	Customer: *customer,
-		// }
-
-		// err = validCustomer.Validate()
-		// if err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
 
 		c.JSON(http.StatusOK, order)
 	}

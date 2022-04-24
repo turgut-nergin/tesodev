@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/database"
 )
 
@@ -12,11 +13,10 @@ var ChangeOrderStatus = func(r *database.Repository) func(c *gin.Context) {
 
 		orderId := c.Params.ByName("orderId")
 
-		err := c.ShouldBind(orderId)
+		_, err := uuid.Parse(orderId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
-			return
+			c.JSON(http.StatusBadRequest, err.Error())
 		}
 
 		status := c.Query("status")

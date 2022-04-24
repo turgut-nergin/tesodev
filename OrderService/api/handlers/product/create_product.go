@@ -26,17 +26,6 @@ package product
 // 			Name:     req.Name,
 // 		}
 
-// 		// validCustomer := customerValidation.Customer{
-// 		// 	Customer: *customer,
-// 		// }
-
-// 		// err = validCustomer.Validate()
-
-// 		// if err != nil {
-// 		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		// 	return
-// 		// }
-
 // 		inserted, err := r.InsertProduct(product)
 
 // 		if err != nil {

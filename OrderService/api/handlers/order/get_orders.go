@@ -2,7 +2,6 @@ package order
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
@@ -18,7 +17,7 @@ var GetOrdersHandler = func(database *database.Repository) func(context *gin.Con
 		}
 
 		if req == nil {
-			c.String(http.StatusNotFound, "Table is Empty")
+			c.String(http.StatusNoContent, "Table is Empty")
 			return
 		}
 
@@ -32,7 +31,8 @@ var GetOrdersHandler = func(database *database.Repository) func(context *gin.Con
 				Status:     order.Status,
 				Address:    response_models.Address(order.Address),
 				Product:    response_models.Product(order.Product),
-				CreatedAdd: time.Now(),
+				CreatedAdd: order.CreatedAdd,
+				UpdatedAdd: order.UpdatedAdd,
 			})
 		}
 
