@@ -1,16 +1,19 @@
 version: "3.9"
 services:
-#   matching-service:
-#     container_name: matching_container
-#     build:
-#         context: matching-service
-#     image: bitaksi/matching-service
-#     ports:
-#       - "8081:8081"
-#     networks:
-#       service-network:
-#         aliases:
-#           - matching-service
+  order-service:
+    container_name: order_container
+    build:
+        context: OrderService
+    image: tesodev/order_service
+    ports:
+      - "8087:8087"
+    depends_on:
+      - mongo-db
+      - customer-service
+    networks:
+      service-network:
+        aliases:
+          - order-service
 
   customer-service:
     container_name: customer_container
@@ -51,7 +54,7 @@ services:
         aliases:
           - swagger-ui
     environment:
-      URLS: "[{ url: \"doc/customer_swagger.yaml\", name: \"Customers\" }]"
+      URLS: "[{ url: \"doc/customer_swagger.yaml\", name: \"Customers\" }, { url: \"doc/order_swagger.yaml\", name: \"Orders\" }, ]"
 
 volumes:
   mongo-data:

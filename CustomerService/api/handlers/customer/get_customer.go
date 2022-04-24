@@ -5,12 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
-	"github.com/turgut-nergin/tesodev/repository/repo"
+	"github.com/turgut-nergin/tesodev/database"
 )
 
-var GetCustomers = func(repository *repo.Repository) func(context *gin.Context) {
+var GetCustomers = func(database *database.Repository) func(context *gin.Context) {
 	return func(c *gin.Context) {
-		req, err := repository.Get()
+		req, err := database.Get()
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			return

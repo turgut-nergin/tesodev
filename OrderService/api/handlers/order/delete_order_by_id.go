@@ -1,4 +1,4 @@
-package customer
+package order
 
 import (
 	"net/http"
@@ -7,16 +7,16 @@ import (
 	"github.com/turgut-nergin/tesodev/database"
 )
 
-var DeleteCustomerById = func(r *database.Repository) func(c *gin.Context) {
+var DeleteOrderById = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		customerId := c.Param("customerId")
+		orderId := c.Param("orderId")
 
-		if len(customerId) == 0 {
+		if len(orderId) == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Id can not be empty!"})
 			return
 		}
 
-		err := r.Delete(customerId)
+		err := r.Delete(orderId)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, false)
