@@ -6,7 +6,7 @@ import (
 	"github.com/turgut-nergin/tesodev/database"
 )
 
-func GetRouter(e *gin.Engine, r *database.Repository) {
+func InitRouter(e *gin.Engine, r *database.Repository) {
 	e.POST("/order/insert/customerId/:customerId", order.CreateOrderHandler(r))
 	e.PUT("/order/update/orderId/:orderId", order.UpdateOrderHandler(r))
 	e.DELETE("/order/delete/orderId/:orderId", order.DeleteOrderById(r))

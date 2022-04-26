@@ -1,9 +1,8 @@
 package database
 
 import (
-	"time"
-
 	"github.com/google/uuid"
+	"github.com/turgut-nergin/tesodev/database/lib"
 	"github.com/turgut-nergin/tesodev/database/models"
 	"github.com/turgut-nergin/tesodev/mongo"
 	"gopkg.in/mgo.v2/bson"
@@ -34,6 +33,7 @@ func (r *Repository) GetOrdersByCustomerId(id string) ([]*models.Order, error) {
 
 	return order, nil
 }
+
 func (r *Repository) Get() ([]*models.Order, error) {
 	var session = r.mongoClient.NewSession()
 	defer session.Close()
@@ -59,7 +59,7 @@ func (r *Repository) Insert(order *models.Order) (*models.Order, error) {
 	defer session.Close()
 
 	order.OrderId = uuid.NewString()
-	order.CreatedAdd = time.Now()
+	order.CreatedAt = lib.TimeStampNow()
 
 	err := session.
 		DB(r.DB.Name).
@@ -83,7 +83,7 @@ func (r *Repository) UpdateOrderStatus(id string, status string) (bool, error) {
 	err := session.
 		DB(r.DB.Name).
 		C(r.DB.CollectionName).Update(selector, bson.M{
-		"$set": bson.M{"status": status, "updatedadd": time.Now()}})
+		"$set": bson.M{"status": status, "updatedat": lib.TimeStampNow()}})
 
 	if err != nil {
 		return false, err
@@ -94,8 +94,11 @@ func (r *Repository) UpdateOrderStatus(id string, status string) (bool, error) {
 
 func (r *Repository) Update(id string, order *models.Order) (bool, error) {
 	var session = r.mongoClient.NewSession()
+
 	defer session.Close()
+
 	selector := bson.M{"orderId": id}
+	order.UpdatedAt = lib.TimeStampNow()
 
 	err := session.
 		DB(r.DB.Name).
@@ -112,19 +115,22 @@ func (r *Repository) Update(id string, order *models.Order) (bool, error) {
 func (r *Repository) GetOrderById(id string) (*models.Order, error) {
 	var session = r.mongoClient.NewSession()
 	defer session.Close()
+
 	query := bson.M{"orderId": id}
-	var customer *models.Order
+
+	var order *models.Order
+
 	err := session.
 		DB(r.DB.Name).
 		C(r.DB.CollectionName).
 		Find(query).
-		One(&customer)
+		One(&order)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return customer, nil
+	return order, nil
 }
 
 func (r *Repository) Delete(id string) error {

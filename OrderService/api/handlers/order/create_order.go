@@ -2,7 +2,6 @@ package order
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -57,8 +56,6 @@ var CreateOrderHandler = func(r *database.Repository) func(c *gin.Context) {
 			return
 		}
 
-		//#TODO: you must converted uuid to bson type :)
-
 		order := &models.Order{
 			CustomerId: customerId,
 			Quantity:   req.Quantity,
@@ -66,7 +63,6 @@ var CreateOrderHandler = func(r *database.Repository) func(c *gin.Context) {
 			Status:     req.Status,
 			Address:    models.Address(req.Address),
 			Product:    models.Product(req.Product),
-			CreatedAdd: time.Now(),
 		}
 
 		orderR, err := r.Insert(order)

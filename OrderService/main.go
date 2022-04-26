@@ -22,7 +22,7 @@ func main() {
 	engine := gin.New()
 	engine.Use(config.InitCORSConfig())
 	engine.Use(gin.Recovery())
-	routes.GetRouter(engine, repo)
+	routes.InitRouter(engine, repo)
 	engine.Run(":8087")
 
 }

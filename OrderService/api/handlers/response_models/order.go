@@ -7,7 +7,7 @@ import (
 )
 
 type Order struct {
-	ID         bson.ObjectId `json:"id,omitempty"`
+	ID         bson.ObjectId `json:"_id,omitempty"`
 	OrderId    string        `json:"orderid"`
 	CustomerId string        `json:"customerid"`
 	Quantity   int           `json:"quantity"`
@@ -15,6 +15,6 @@ type Order struct {
 	Status     string        `json:"status"`
 	Address    Address       `json:"address"`
 	Product    Product       `json:"product"`
-	CreatedAdd time.Time     `json:"createdAdd,omitempty"`
-	UpdatedAdd time.Time     `json:"updatedAdd,omitempty"`
+	CreatedAt  time.Time     `json:"createdAt,omitempty"`
+	UpdatedAt  time.Time     `json:"updatedAt,omitempty"`
 }

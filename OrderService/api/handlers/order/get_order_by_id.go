@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
+	"github.com/turgut-nergin/tesodev/api/handlers/lib"
 	"github.com/turgut-nergin/tesodev/database"
 )
 
@@ -27,17 +27,7 @@ var GetOrderById = func(r *database.Repository) func(c *gin.Context) {
 			return
 		}
 
-		order := &response_models.Order{
-			OrderId:    req.OrderId,
-			CustomerId: req.CustomerId,
-			Quantity:   req.Quantity,
-			Price:      req.Price,
-			Status:     req.Status,
-			Address:    response_models.Address(req.Address),
-			Product:    response_models.Product(req.Product),
-			CreatedAdd: req.CreatedAdd,
-			UpdatedAdd: req.UpdatedAdd,
-		}
+		order := lib.ResponseAssign(req)
 
 		c.JSON(http.StatusOK, order)
 	}

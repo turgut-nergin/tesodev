@@ -2,7 +2,6 @@ package order
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -38,13 +37,12 @@ var UpdateOrderHandler = func(r *database.Repository) func(c *gin.Context) {
 		}
 
 		order := &models.Order{
-			OrderId:    orderId,
-			Quantity:   req.Quantity,
-			Price:      req.Price,
-			Status:     req.Status,
-			Address:    models.Address(req.Address),
-			Product:    models.Product(req.Product),
-			UpdatedAdd: time.Now(),
+			OrderId:  orderId,
+			Quantity: req.Quantity,
+			Price:    req.Price,
+			Status:   req.Status,
+			Address:  models.Address(req.Address),
+			Product:  models.Product(req.Product),
 		}
 
 		_, err = r.Update(orderId, order)
