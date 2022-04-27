@@ -25,7 +25,7 @@ var UpdateCustomerHandler = func(r *database.Repository) func(c *gin.Context) {
 		err = c.ShouldBindJSON(&req)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 

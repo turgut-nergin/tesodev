@@ -13,7 +13,7 @@ func main() {
 	// client := mongo.GetMongoDB()
 	dbModel := models.Repository{
 		Name:           "tesodev",
-		CollectionName: "orders",
+		CollectionName: "customers",
 	}
 
 	url := "mongo-db:27017"
