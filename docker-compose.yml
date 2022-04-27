@@ -76,5 +76,3 @@ volumes:
 
 networks:
   service-network:
-
-    # { url: \"doc/matching_swagger.yaml\", name: \"Matching\" }]
