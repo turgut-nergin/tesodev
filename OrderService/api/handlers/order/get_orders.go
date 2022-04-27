@@ -9,9 +9,9 @@ import (
 	"github.com/turgut-nergin/tesodev/database"
 )
 
-var GetOrdersHandler = func(database *database.Repository) func(context *gin.Context) {
+var GetOrdersHandler = func(r *database.Repository) func(context *gin.Context) {
 	return func(c *gin.Context) {
-		req, err := database.Get()
+		req, err := r.Get()
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			return

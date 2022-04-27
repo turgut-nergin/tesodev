@@ -36,17 +36,11 @@ var UpdateCustomerHandler = func(r *database.Repository) func(c *gin.Context) {
 			return
 		}
 
-		address := &models.Address{
-			AddressLine: req.Address.AddressLine,
-			City:        req.Address.City,
-			CityCode:    req.Address.CityCode,
-			Country:     req.Address.Country,
-		}
 		customer := &models.Customer{
 			Name:       req.Name,
 			CustomerId: customerId,
 			Email:      req.Email,
-			Address:    *address,
+			Address:    models.Address(req.Address),
 		}
 
 		_, err = r.Update(customerId, customer)
@@ -56,6 +50,6 @@ var UpdateCustomerHandler = func(r *database.Repository) func(c *gin.Context) {
 			return
 		}
 
-		c.JSON(http.StatusAccepted, true)
+		c.JSON(http.StatusOK, true)
 	}
 }

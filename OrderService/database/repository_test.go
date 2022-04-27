@@ -96,7 +96,7 @@ func TestCreateOrder(t *testing.T) {
 	defer mockSession.Close()
 
 	got := models.Order{}
-	err = mockDB.Find(bson.M{"orderId": reqOrder.OrderId}).One(&got)
+	err = mockDB.Find(query).One(&got)
 
 	if err != nil {
 		t.Errorf("TestCreateOrder: Get order error: %v\n", order.OrderId)
@@ -115,7 +115,7 @@ func TestCreateOrder(t *testing.T) {
 		return
 	}
 
-	t.Logf("Success")
+	t.Logf("Test create order success")
 }
 
 func TestUpdateOrder(t *testing.T) {
@@ -129,7 +129,6 @@ func TestUpdateOrder(t *testing.T) {
 		return
 	}
 
-	order.UpdatedAt = lib.TimeStampNow()
 	order.Price = 29.90
 	order.Quantity = 2
 	mockDB.Update(order.OrderId, order)
@@ -153,7 +152,7 @@ func TestUpdateOrder(t *testing.T) {
 		t.Errorf("Delete order error: %v\n", err)
 		return
 	}
-	t.Logf("Test Update Order Success :)")
+	t.Logf("Test update order success")
 
 }
 
@@ -197,7 +196,6 @@ func TestChangeOrderStatus(t *testing.T) {
 		return
 	}
 
-	order.UpdatedAt = lib.TimeStampNow()
 	order.Status = "Teslim edildi"
 	mockDB.Update(order.OrderId, order)
 
@@ -245,7 +243,7 @@ func TestGetOrderById(t *testing.T) {
 
 	cleanDB(db)
 
-	t.Logf("Test Get Order By ID Success :)")
+	t.Logf("Test get order by order id success ")
 }
 
 func TestGetOrdersByCustomerID(t *testing.T) {
@@ -275,15 +273,15 @@ func TestGetOrdersByCustomerID(t *testing.T) {
 
 	cleanDB(db)
 
-	t.Logf("Test Get Orders by Customer ID Success")
+	t.Logf("Test Get Orders by customer id success")
 }
 
 func TestGetOrders(t *testing.T) {
 	db, mockSession := sessionConfig()
 	defer mockSession.Close()
 	dummyData := dummyOrderModel()
-	orders := []*models.Order{dummyData, dummyData}
-	insertDummyOrders(orders, db)
+	dummyOrders := []*models.Order{dummyData, dummyData}
+	insertDummyOrders(dummyOrders, db)
 
 	got, err := mockDB.Get()
 
@@ -292,10 +290,10 @@ func TestGetOrders(t *testing.T) {
 		return
 	}
 
-	if !reflect.DeepEqual(got, orders) {
-		if len(got) == len(orders) {
-			for i := range orders {
-				t.Errorf("got %v want %v", got[i], orders[i])
+	if !reflect.DeepEqual(got, dummyOrders) {
+		if len(got) == len(dummyOrders) {
+			for i := range dummyOrders {
+				t.Errorf("got %v want %v", got[i], dummyOrders[i])
 			}
 			return
 		}
@@ -305,5 +303,5 @@ func TestGetOrders(t *testing.T) {
 
 	cleanDB(db)
 
-	t.Logf("Test Get Orders by Customer ID Success")
+	t.Logf("Test get orders success")
 }

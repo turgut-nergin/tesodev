@@ -11,9 +11,9 @@ type Address struct {
 
 func (address Address) validateAddress() error {
 	return validation.ValidateStruct(&address,
-		validation.Field(&address.AddressLine, validation.Required, validation.Length(5, 50)),
-		validation.Field(&address.City, validation.Required, validation.Length(5, 50)),
-		validation.Field(&address.Country, validation.Required, validation.Length(5, 50)),
+		validation.Field(&address.AddressLine, validation.Required, validation.Length(2, 50)),
+		validation.Field(&address.City, validation.Required, validation.Length(2, 50)),
+		validation.Field(&address.Country, validation.Required, validation.Length(2, 50)),
 		validation.Field(&address.CityCode, validation.Required, validation.Max(99999), validation.Min(10000)),
 	)
 }

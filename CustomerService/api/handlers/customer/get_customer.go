@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/turgut-nergin/tesodev/api/handlers/lib"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
 	"github.com/turgut-nergin/tesodev/database"
 )
@@ -23,14 +25,8 @@ var GetCustomers = func(database *database.Repository) func(context *gin.Context
 
 		var customer []response_models.Customer
 		for _, cus := range req {
-			customer = append(customer, response_models.Customer{
-				Name:       cus.Name,
-				CustomerId: cus.CustomerId,
-				Email:      cus.Email,
-				CreatedAdd: cus.CreatedAdd,
-				UpdatedAdd: cus.UpdatedAdd,
-				Address:    response_models.Address(cus.Address),
-			})
+			response := lib.ResponseAssign(cus)
+			customer = append(customer, *response)
 		}
 
 		c.JSON(http.StatusOK, customer)

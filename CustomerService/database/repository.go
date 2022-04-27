@@ -1,15 +1,16 @@
 package database
 
 import (
-	"time"
-
 	"github.com/globalsign/mgo/bson"
+	"github.com/google/uuid"
+	"github.com/turgut-nergin/tesodev/database/lib"
 	"github.com/turgut-nergin/tesodev/database/models"
 	"github.com/turgut-nergin/tesodev/mongo"
 )
 
 type Repository struct {
 	mongoClient *mongo.Client
+	DB          models.Repository
 }
 
 func (r *Repository) GetByCustomerId(id string) (*models.Customer, error) {
@@ -18,8 +19,8 @@ func (r *Repository) GetByCustomerId(id string) (*models.Customer, error) {
 	query := bson.M{"customerId": id}
 	var customer *models.Customer
 	err := session.
-		DB("tesodev").
-		C("customer").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Find(query).
 		One(&customer)
 
@@ -36,8 +37,9 @@ func (r *Repository) IdIsExist(id string) (bool, error) {
 	query := bson.M{"customerId": id}
 
 	count, err := session.
-		DB("tesodev").
-		C("customer").Find(query).Count()
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
+		Find(query).Count()
 
 	if err != nil {
 		return false, err
@@ -45,13 +47,13 @@ func (r *Repository) IdIsExist(id string) (bool, error) {
 	return count > 0, nil
 }
 
-func (r *Repository) Get() ([]models.Customer, error) {
+func (r *Repository) Get() ([]*models.Customer, error) {
 	var session = r.mongoClient.NewSession()
 	defer session.Close()
-	var customer []models.Customer
+	var customer []*models.Customer
 	err := session.
-		DB("tesodev").
-		C("customer").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Find(nil).
 		Limit(100).
 		Iter().
@@ -68,9 +70,12 @@ func (r *Repository) Insert(customer *models.Customer) (*models.Customer, error)
 	var session = r.mongoClient.NewSession()
 	defer session.Close()
 
+	customer.CreatedAt = lib.TimeStampNow()
+	customer.CustomerId = uuid.New().String()
+
 	err := session.
-		DB("tesodev").
-		C("customer").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Insert(customer)
 
 	if err != nil {
@@ -85,12 +90,13 @@ func (r *Repository) Update(id string, customer *models.Customer) (*models.Custo
 	defer session.Close()
 	selector := bson.M{"customerId": id}
 
-	customer.UpdatedAdd = time.Now()
+	customer.UpdatedAt = lib.TimeStampNow()
 
 	err := session.
-		DB("tesodev").
-		C("customer").Update(selector, bson.M{
-		"$set": customer})
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
+		Update(selector, bson.M{
+			"$set": customer})
 
 	if err != nil {
 		return nil, err
@@ -106,8 +112,8 @@ func (r *Repository) Delete(id string) error {
 	defer session.Close()
 
 	err := session.
-		DB("tesodev").
-		C("customer").
+		DB(r.DB.Name).
+		C(r.DB.CollectionName).
 		Remove(query)
 
 	if err != nil {
@@ -116,7 +122,10 @@ func (r *Repository) Delete(id string) error {
 	return nil
 }
 
-func New(mongoClient *mongo.Client) *Repository {
-	repo := Repository{mongoClient}
+func New(mongoClient *mongo.Client, db models.Repository) *Repository {
+	repo := Repository{
+		mongoClient: mongoClient,
+		DB:          db,
+	}
 	return &repo
 }

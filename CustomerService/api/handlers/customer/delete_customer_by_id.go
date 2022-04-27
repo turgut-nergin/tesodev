@@ -22,7 +22,7 @@ var DeleteCustomerById = func(r *database.Repository) func(c *gin.Context) {
 		err = r.Delete(customerId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, false)
+			c.JSON(http.StatusNoContent, false)
 			return
 		}
 

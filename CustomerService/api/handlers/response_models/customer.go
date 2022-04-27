@@ -9,6 +9,6 @@ type Customer struct {
 	Name       string    `json:"name"`
 	Email      string    `json:"email"`
 	Address    Address   `json:"adress"`
-	CreatedAdd time.Time `json:"createdAdd,omitempty"`
-	UpdatedAdd time.Time `json:"updatedAdd,omitempty"`
+	CreatedAt  time.Time `json:"createdAt,omitempty"`
+	UpdatedAt  time.Time `json:"updatedAt,omitempty"`
 }
