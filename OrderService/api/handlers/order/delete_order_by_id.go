@@ -4,19 +4,23 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/database"
 )
 
 var DeleteOrderById = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
+
 		orderId := c.Param("orderId")
 
-		if len(orderId) == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Id can not be empty!"})
+		_, err := uuid.Parse(orderId)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
-		err := r.Delete(orderId)
+		err = r.Delete(orderId)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, false)

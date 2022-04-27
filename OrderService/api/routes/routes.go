@@ -6,12 +6,12 @@ import (
 	"github.com/turgut-nergin/tesodev/database"
 )
 
-func InitializeRoutes(e *gin.Engine, r *database.Repository) {
-	e.POST("/insert/order/customerId/:customerId", order.CreateOrderHandler(r))
-	e.PUT("/update/orders/orderId/:orderId", order.UpdateOrderHandler(r))
-	e.DELETE("/delete/orders/orderId/:orderId", order.DeleteOrderById(r))
-	e.GET("/bulk/orders", order.GetOrdersHandler(r))
-	e.GET("/bulk/customer/orders/customerId/:customerId", order.GetOrdersByCustomerId(r))
-	e.GET("/get/orders/orderId/:orderId", order.GetOrderById(r))
-	e.PUT("/update/order/status/orderId/:orderId", order.ChangeOrderStatus(r))
+func InitRouter(e *gin.Engine, r *database.Repository) {
+	e.POST("/order/insert/customerId/:customerId", order.CreateOrderHandler(r))
+	e.PUT("/order/update/orderId/:orderId", order.UpdateOrderHandler(r))
+	e.DELETE("/order/delete/orderId/:orderId", order.DeleteOrderById(r))
+	e.GET("/order/bulk", order.GetOrdersHandler(r))
+	e.GET("/order/bulk/customer/customerId/:customerId", order.GetOrdersByCustomerId(r))
+	e.GET("/order/get/orderId/:orderId", order.GetOrderById(r))
+	e.PUT("/order/update/status/orderId/:orderId", order.ChangeOrderStatus(r))
 }

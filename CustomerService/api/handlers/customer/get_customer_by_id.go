@@ -4,18 +4,19 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
-	"github.com/turgut-nergin/tesodev/api/lib/validations/responseValidation"
+	"github.com/google/uuid"
+	"github.com/turgut-nergin/tesodev/api/handlers/lib"
 	"github.com/turgut-nergin/tesodev/database"
 )
 
 var GetCustomerByCustomerId = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		customerId := c.Params.ByName("customerId")
-		err := c.ShouldBind(customerId)
+
+		_, err := uuid.Parse(customerId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
@@ -30,24 +31,7 @@ var GetCustomerByCustomerId = func(r *database.Repository) func(c *gin.Context) 
 			return
 		}
 
-		customer := &response_models.Customer{
-			Name:       req.Name,
-			CustomerId: req.CustomerId,
-			Email:      req.Email,
-			CreatedAdd: req.CreatedAdd,
-			UpdatedAdd: req.UpdatedAdd,
-			Address:    response_models.Address(req.Address),
-		}
-
-		validCustomer := responseValidation.Customer{
-			Customer: *customer,
-		}
-
-		err = validCustomer.Validate()
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+		customer := lib.ResponseAssign(req)
 
 		c.JSON(http.StatusOK, customer)
 	}

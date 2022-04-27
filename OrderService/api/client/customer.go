@@ -13,7 +13,7 @@ import (
 var baseURL = url.URL{
 	Scheme: "http",
 	Host:   "customer-service:8086",
-	Path:   "/validate/customer/",
+	Path:   "/customer/validate/",
 }
 
 func Get(customerId string) (bool, *response_models.StatusError) {

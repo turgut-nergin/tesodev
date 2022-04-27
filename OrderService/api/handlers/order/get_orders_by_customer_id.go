@@ -2,10 +2,11 @@ package order
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/api/client"
+	"github.com/turgut-nergin/tesodev/api/handlers/lib"
 	"github.com/turgut-nergin/tesodev/api/handlers/response_models"
 	"github.com/turgut-nergin/tesodev/database"
 )
@@ -13,10 +14,11 @@ import (
 var GetOrdersByCustomerId = func(r *database.Repository) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		customerId := c.Params.ByName("customerId")
-		err := c.ShouldBind(customerId)
+
+		_, err := uuid.Parse(customerId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err})
+			c.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
 
@@ -28,40 +30,22 @@ var GetOrdersByCustomerId = func(r *database.Repository) func(c *gin.Context) {
 		}
 
 		if !customerExist {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Customer ID is not registered"})
+			c.JSON(http.StatusNotFound, gin.H{"error": "Customer ID is not found"})
 			return
 		}
 
 		req, err := r.GetOrdersByCustomerId(customerId)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "ID is not found"})
+			c.JSON(http.StatusNoContent, gin.H{"error": "Table is empty"})
 			return
 		}
 
 		var orders []*response_models.Order
 		for _, order := range req {
-			orders = append(orders, &response_models.Order{
-				OrderId:    order.OrderId,
-				CustomerId: order.CustomerId,
-				Quantity:   order.Quantity,
-				Price:      order.Price,
-				Status:     order.Status,
-				Address:    response_models.Address(order.Address),
-				Product:    response_models.Product(order.Product),
-				CreatedAdd: time.Now(),
-			})
+			reponse_model := lib.ResponseAssign(order)
+			orders = append(orders, reponse_model)
 		}
-
-		// validCustomer := responseValidation.Customer{
-		// 	Customer: *customer,
-		// }
-
-		// err = validCustomer.Validate()
-		// if err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
 
 		c.JSON(http.StatusOK, orders)
 	}

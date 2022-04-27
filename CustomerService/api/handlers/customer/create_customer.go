@@ -2,13 +2,9 @@ package customer
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/turgut-nergin/tesodev/api/handlers/request_models"
-	"github.com/turgut-nergin/tesodev/api/lib/validations/customerValidation"
-	"github.com/turgut-nergin/tesodev/api/lib/validations/requestValidation"
 	"github.com/turgut-nergin/tesodev/database"
 	"github.com/turgut-nergin/tesodev/database/models"
 )
@@ -24,11 +20,7 @@ var CreateCustomer = func(r *database.Repository) func(c *gin.Context) {
 			return
 		}
 
-		validRequest := requestValidation.Customer{
-			Customer: *req,
-		}
-
-		err = validRequest.Validate()
+		err = req.Validate()
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -37,18 +29,10 @@ var CreateCustomer = func(r *database.Repository) func(c *gin.Context) {
 
 		//#TODO: you must converted uuid to bson type :)
 		customer := &models.Customer{
-			Name:       req.Name,
-			CustomerId: uuid.New().String(),
-			Email:      req.Email,
-			Address:    models.Address(req.Address),
-			CreatedAdd: time.Now(),
+			Name:    req.Name,
+			Email:   req.Email,
+			Address: models.Address(req.Address),
 		}
-
-		validCustomer := customerValidation.Customer{
-			Customer: *customer,
-		}
-
-		err = validCustomer.Validate()
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -60,6 +44,6 @@ var CreateCustomer = func(r *database.Repository) func(c *gin.Context) {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
-		c.JSON(http.StatusAccepted, customerR.CustomerId)
+		c.JSON(http.StatusOK, customerR.CustomerId)
 	}
 }
