@@ -10,7 +10,7 @@ cd tesOdev
 
 docker-compose up
 
-go swagger UI -> http://localhost:8080/ url
+go Swagger UI -> http://localhost:8080/ url
 
 Test OrderService
   - cd tesodev/OrderService/database
