@@ -2,8 +2,7 @@
 
 quick start for cli
 
-Project install
-  - git clone git@github.com:turgut-nergin/tesodev.git
+Project Download
 
 Docker Compose Over SSH
   - cd tesOdev
