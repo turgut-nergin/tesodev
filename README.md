@@ -3,12 +3,11 @@
 quick start for cli
 
 Project install
+  - git clone git@github.com:turgut-nergin/tesodev.git
 
-git clone git@github.com:turgut-nergin/tesodev.git
-
-cd tesOdev
-
-docker-compose up
+Docker Compose Over SSH
+  - cd tesOdev
+  - docker-compose up
 
 go Swagger UI -> http://localhost:8080/ url
 
