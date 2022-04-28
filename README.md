@@ -1,6 +1,6 @@
 # tesodev
 
-quick start for cli
+Quick Start For Cli
 
 Project Download
 
@@ -10,6 +10,7 @@ Docker Compose Over SSH
 
 go Swagger UI -> http://localhost:8080/ url
 
+Open New Terminal
 Test OrderService
   - cd tesodev/OrderService/database
   - go test -test.v
