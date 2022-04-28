@@ -13,11 +13,11 @@ docker-compose up
 go -> http://localhost:8080/ url
 
 Test OrderService
-  cd tesodev/OrderService/database
-  go test -test.v
+  - cd tesodev/OrderService/database
+  - go test -test.v
   
  Test CustomerService
-  cd tesodev/CustomerService/database/
-  go test -test.v
+  - cd tesodev/CustomerService/database/
+  - go test -test.v
   
   
