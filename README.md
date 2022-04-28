@@ -4,7 +4,7 @@ quick start for cli
 
 Project install
 
-git clone git clone git@github.com:turgut-nergin/tesodev.git
+git clone git@github.com:turgut-nergin/tesodev.git
 
 cd tesOdev
 
