@@ -4,7 +4,8 @@ Quick Start For Cli
 
 Project Download
 
-Docker Compose Over SSH
+Docker Compose Over SSH 
+  Deploy project 
   - cd tesOdev
   - docker-compose up
 
